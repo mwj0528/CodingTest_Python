@@ -1,14 +1,18 @@
-# popleft했는데 더 큰 수가 proprities에 있으면 다시 append
-# 없으면 실행
+# popleft
+# 우선 순위가 1순위가 아니다? -> 다시 append(맨뒤로)
+# 1순위다? -> continue
+# location의 idx에 있는 프로세스가 몇번째로 실행되는지 return
 from collections import deque
 def solution(priorities, location):
-    queue = deque([(p, i) for i, p in enumerate(priorities)])
-    cnt = 0
+    queue = deque((i, p) for i,p in enumerate(priorities))
+    print(queue)
+    
+    answer = 0
     while queue:
-        cur = queue.popleft()
-        if any(cur[0] < other[0] for other in queue):
-            queue.append(cur)
+        process = queue.popleft()
+        if any(process[1]<other[1] for other in queue):
+            queue.append(process)
         else:
-            cnt += 1
-            if cur[1] == location:  # 내가 찾던 프로세스라면
-                return cnt
+            answer += 1
+            if process[0] == location:
+                return answer
